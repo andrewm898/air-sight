@@ -157,7 +157,29 @@ export class GoogleMap extends Component {
                 uncheckedIcon={false}
               />
             </div>
-            <Marker onClick={this.onMarkerClick} name={"Current location"} />
+            <Marker
+              name={"Corec"}
+              position={{ lat: 40.424, lng: -86.929 }}
+              onClick={this.onMarkerClick}
+              icon={{
+                url:
+                  "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
+                anchor: new window.google.maps.Point(32, 32),
+                scaledSize: new window.google.maps.Size(64, 64)
+              }}
+            />
+            <InfoWindow
+              marker={this.state.activeMarker}
+              visible={this.state.showingInfoWindow}
+            >
+              <div>
+                {"(" +
+                  this.state.x.toFixed(6) +
+                  ", " +
+                  this.state.y.toFixed(6) +
+                  ")"}
+              </div>
+            </InfoWindow>
           </Map>
         )}
         {!this.state.checked && (
@@ -181,6 +203,17 @@ export class GoogleMap extends Component {
                 uncheckedIcon={false}
               />
             </div>
+            <Marker
+              name={"Corec"}
+              position={{ lat: 40.424, lng: -86.929 }}
+              onClick={this.onMarkerClick}
+              icon={{
+                url:
+                  "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
+                anchor: new window.google.maps.Point(32, 32),
+                scaledSize: new window.google.maps.Size(64, 64)
+              }}
+            />
             <InfoWindow
               marker={this.state.activeMarker}
               visible={this.state.showingInfoWindow}
@@ -193,17 +226,6 @@ export class GoogleMap extends Component {
                   ")"}
               </div>
             </InfoWindow>
-            <Marker
-              name={"Corec"}
-              position={{ lat: 40.424, lng: -86.929 }}
-              onClick={this.onMarkerClick}
-              icon={{
-                url:
-                  "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
-                anchor: new window.google.maps.Point(32, 32),
-                scaledSize: new window.google.maps.Size(64, 64)
-              }}
-            />
           </Map>
         )}
       </div>
