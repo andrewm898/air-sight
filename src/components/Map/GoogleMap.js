@@ -7,7 +7,6 @@ import db from "../../firebaseConfig";
 import sosIcon from "../../assets/sosIcon.png";
 
 const auth = require("../../auth.json");
-
 export class GoogleMap extends Component {
   constructor() {
     super();
@@ -48,15 +47,17 @@ export class GoogleMap extends Component {
     });
   };
 
-  onMapClicked = (props, e) => {
+  onMapClicked = (props, e, coords) => {
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
         activeMarker: null,
-        visible: this.state.windowHasClosed
+        visible: this.state.windowHasClosed,
+
       });
     } else {
-      console.log(e);
+      const{latLng} = coords;
+      console.log(coords);
     }
   };
 
