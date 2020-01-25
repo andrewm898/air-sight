@@ -7,11 +7,13 @@ import db from "../../firebaseConfig";
 
 const auth = require("../../auth.json");
 
+
 export class GoogleMap extends Component {
   constructor() {
     super();
     this.state = {
       markers: [],
+      drones: [],
       checked: true,
       x: 0,
       y: 0,
@@ -36,6 +38,8 @@ export class GoogleMap extends Component {
     });
   };
 
+  
+
   onMapClicked = (props, e) => {
     if (this.state.showingInfoWindow) {
       this.setState({
@@ -44,7 +48,7 @@ export class GoogleMap extends Component {
         visible: this.state.windowHasClosed
       });
     } else {
-      console.log(e);
+      //console.log(e.data().latLng.lat());
     }
   };
 
@@ -76,6 +80,34 @@ export class GoogleMap extends Component {
         }
       });
     });
+
+    db.collection("droneLocations").onSnapshot(snapshot => {
+      let changes = snapshot.docChanges();
+      changes.forEach(change => {
+        console.log(change.doc.data());
+        if (change.type == "added") {
+          console.log(change.doc.data());
+          this.setState(
+            (this.state.drones = this.state.drones.concat(
+              <Marker
+                name={change.doc.data().droneID}
+                position={{
+                  lat: change.doc.data().coords.latitude,
+                  lng: change.doc.data().coords.longitude
+                }}
+                onClick={this.onMarkerClick}
+                icon={{ 
+                  url : require('../../assets/droneIcon.png'),
+                  anchor: new window.google.maps.Point(32, 32),
+                  scaledSize: new window.google.maps.Size(64, 64)
+                }}
+              />
+            ))
+          );
+        }
+      });
+    });
+
   };
 
   switchContainer = () => {
@@ -125,6 +157,7 @@ export class GoogleMap extends Component {
             mapType={"roadmap"}
           >
             {this.state.markers}
+            {this.state.drones}
             {this.switchContainer()}
             {this.liveWindow()}
           </Map>
@@ -143,6 +176,7 @@ export class GoogleMap extends Component {
             mapType={"satellite"}
           >
             {this.state.markers}
+            {this.state.drones}
             {this.switchContainer()}
             {this.liveWindow()}
           </Map>
