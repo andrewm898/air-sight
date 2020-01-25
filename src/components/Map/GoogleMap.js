@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Switch from "react-switch";
 import "./GoogleMap.css";
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 
 const auth = require("../../auth.json");
 const style = {
@@ -96,7 +96,12 @@ export class GoogleMap extends Component {
   constructor() {
     super();
     this.state = {
-      checked: true
+      checked: true,
+      x: 0,
+      y: 0,
+      showingInfoWindow: false,
+      activeMarker: {},
+      selectedPlace: {}
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -106,6 +111,27 @@ export class GoogleMap extends Component {
     this.setState({ checked });
   }
 
+  onMarkerClick = (props, marker, e) => {
+    this.setState({
+      x: e.latLng.lat(),
+      y: e.latLng.lng(),
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true
+    });
+    console.log(e.latLng.lat(), e.latLng.lng());
+  };
+
+  onMapClicked = props => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null,
+        visible: this.state.windowHasClosed
+      });
+    }
+  };
+
   render() {
     return (
       <div>
@@ -114,6 +140,11 @@ export class GoogleMap extends Component {
             google={this.props.google}
             zoom={14}
             style={style}
+            onClick={this.onMapClicked}
+            initialCenter={{
+              lat: 40.424,
+              lng: -86.929
+            }}
             styles={streetStyle}
             disableDefaultUI={true}
             mapType={"roadmap"}
@@ -134,6 +165,11 @@ export class GoogleMap extends Component {
             google={this.props.google}
             zoom={14}
             style={style}
+            onClick={this.onMapClicked}
+            initialCenter={{
+              lat: 40.424,
+              lng: -86.929
+            }}
             disableDefaultUI={true}
             mapType={"satellite"}
           >
@@ -145,7 +181,29 @@ export class GoogleMap extends Component {
                 uncheckedIcon={false}
               />
             </div>
-            <Marker onClick={this.onMarkerClick} name={"Current location"} />
+            <InfoWindow
+              marker={this.state.activeMarker}
+              visible={this.state.showingInfoWindow}
+            >
+              <div>
+                {"(" +
+                  this.state.x.toFixed(6) +
+                  ", " +
+                  this.state.y.toFixed(6) +
+                  ")"}
+              </div>
+            </InfoWindow>
+            <Marker
+              name={"Corec"}
+              position={{ lat: 40.424, lng: -86.929 }}
+              onClick={this.onMarkerClick}
+              icon={{
+                url:
+                  "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
+                anchor: new window.google.maps.Point(32, 32),
+                scaledSize: new window.google.maps.Size(64, 64)
+              }}
+            />
           </Map>
         )}
       </div>
