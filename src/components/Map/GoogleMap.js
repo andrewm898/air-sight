@@ -22,17 +22,17 @@ class GoogleMap extends Component {
 
   createGoogleMap = () =>
     new window.google.maps.Map(this.googleMapRef.current, {
-      zoom: 16,
+      zoom: 17,
       center: {
-        lat: 43.642567,
-        lng: -79.387054
+        lat: 40.429865000,
+        lng: -86.92081500
       },
       disableDefaultUI: true
     });
 
   createMarker = () =>
     new window.google.maps.Marker({
-      position: { lat: 43.642567, lng: -79.387054 },
+      position: { lat: 40.429865000, lng: -86.92081500 },
       map: this.googleMap
     });
 
@@ -41,7 +41,7 @@ class GoogleMap extends Component {
       <div
         id="google-map"
         ref={this.googleMapRef}
-        style={{ width: "400px", height: "300px" }}
+        style={{ width: "600px", height: "600px" }}
       />
     );
   }
