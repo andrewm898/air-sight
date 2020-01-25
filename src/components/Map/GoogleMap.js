@@ -73,6 +73,24 @@ export class GoogleMap extends Component {
               />
             ))
           );
+          this.setState(
+            (this.state.markers = this.state.markers.concat(
+              <Marker
+                name={change.doc.data().droneID}
+                position={{
+                  lat: change.doc.data().coords.latitude,
+                  lng: change.doc.data().coords.longitude
+                }}
+                onClick={this.onMarkerClick}
+                icon={{
+                  url:
+                    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
+                  anchor: new window.google.maps.Point(32, 32),
+                  scaledSize: new window.google.maps.Size(64, 64)
+                }}
+              />
+            ))
+          );
         }
       });
     });
