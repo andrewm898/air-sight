@@ -80,7 +80,7 @@ export class GoogleMap extends Component {
                   url:
                   "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
                   anchor: new window.google.maps.Point(32, 32),
-                  scaledSize: new window.google.maps.Size(64, 64)
+                  scaledSize: new window.google.maps.Size(48, 48)
                 }}
               />
             ))
@@ -111,7 +111,7 @@ export class GoogleMap extends Component {
                 icon={{
                   url: require("../../assets/sosIcon.png"),
                   anchor: new window.google.maps.Point(32, 32),
-                  scaledSize: new window.google.maps.Size(50, 64)
+                  scaledSize: new window.google.maps.Size(45, 60)
                 }}
               />
             ))
