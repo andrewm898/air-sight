@@ -104,14 +104,14 @@ export class GoogleMap extends Component {
                 position={{
                   // lat: change.doc.data().coords.latitude,
                   // lng: change.doc.data().coords.longitude
-                  lat: 40,
+                  lat: 40, //temp coordinates for testing
                   lng: -83
                 }}
                 onClick={this.onSOSClick}
                 icon={{
                   url: require("../../assets/sosIcon.png"),
                   anchor: new window.google.maps.Point(32, 32),
-                  scaledSize: new window.google.maps.Size(64, 64)
+                  scaledSize: new window.google.maps.Size(50, 64)
                 }}
               />
             ))
