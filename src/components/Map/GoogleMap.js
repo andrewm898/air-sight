@@ -6,11 +6,6 @@ import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import db from "../../firebaseConfig";
 
 const auth = require("../../auth.json");
-<<<<<<< HEAD
-=======
-
-
->>>>>>> c9f425e92ce110b1012a29338444638703e2a55d
 export class GoogleMap extends Component {
   constructor() {
     super();
@@ -52,13 +47,7 @@ export class GoogleMap extends Component {
     });
   };
 
-<<<<<<< HEAD
   onMapClicked = (props, e, coords) => {
-=======
-  
-
-  onMapClicked = (props, e) => {
->>>>>>> c9f425e92ce110b1012a29338444638703e2a55d
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
@@ -67,12 +56,8 @@ export class GoogleMap extends Component {
 
       });
     } else {
-<<<<<<< HEAD
       const{latLng} = coords;
       console.log(coords);
-=======
-      //console.log(e.data().latLng.lat());
->>>>>>> c9f425e92ce110b1012a29338444638703e2a55d
     }
   };
 
@@ -149,11 +134,7 @@ export class GoogleMap extends Component {
                 icon={{
                   url: require("../../assets/sosIcon.png"),
                   anchor: new window.google.maps.Point(32, 32),
-<<<<<<< HEAD
                   scaledSize: new window.google.maps.Size(45, 60)
-=======
-                  scaledSize: new window.google.maps.Size(64, 64)
->>>>>>> c9f425e92ce110b1012a29338444638703e2a55d
                 }}
               />
             ))
