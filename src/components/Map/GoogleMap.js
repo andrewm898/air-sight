@@ -6,7 +6,7 @@ import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 const auth = require("../../auth.json");
 const style = {
   width: "100%",
-  height: "95vh"
+  height: "95.25vh"
 };
 const streetStyle = [
   { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
@@ -122,13 +122,15 @@ export class GoogleMap extends Component {
     console.log(e.latLng.lat(), e.latLng.lng());
   };
 
-  onMapClicked = props => {
+  onMapClicked = (props, e) => {
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
         activeMarker: null,
         visible: this.state.windowHasClosed
       });
+    } else {
+      console.log(e);
     }
   };
 

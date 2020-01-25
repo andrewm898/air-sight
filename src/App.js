@@ -1,14 +1,28 @@
 import React from "react";
-import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import GoogleMap from "./components/Map/GoogleMap";
+import DroneInfo from "./components/DroneInfo/DroneInfo";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <Navbar></Navbar>
-      <GoogleMap></GoogleMap>
-    </div>
+    <Router>
+      <link
+        href="https://fonts.googleapis.com/css?family=Nunito&display=swap"
+        rel="stylesheet"
+      />
+      <div className="App">
+        <Navbar></Navbar>
+        <Switch>
+          <Route path="/" exact component={GoogleMap}></Route>
+          <Route
+            path="/DroneInfo"
+            render={() => <DroneInfo droneId={1} />}
+          ></Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

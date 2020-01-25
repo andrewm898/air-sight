@@ -1,8 +1,13 @@
+.container {
+  background-color: white;
+  color: white;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  height: 5vh;
+  height: 4.75vh;
   width: 200px;
   color: #f65058ff;
 }
@@ -12,6 +17,8 @@ ul {
 }
 
 .menu-item a {
+  font-family: "Nunito", sans-serif;
+  font-size: 20px;
   display: block;
   color: #000;
   padding: 8px 16px;

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 // todo: Unless you need to use lifecycle methods or local state,
@@ -7,13 +8,17 @@ import "./Navbar.css";
 class Navbar extends React.Component {
   render() {
     return (
-      <div>
+      <div className="container">
         <ul className="menu">
           <li className="menu-item">
-            <a>Home</a>
+            <Link to="/" className="homeBtn">
+              Home
+            </Link>
           </li>
           <li className="menu-item">
-            <a>Account</a>
+            <Link to="/DroneInfo" className="DroneBtn">
+              Drone
+            </Link>
           </li>
         </ul>
       </div>
