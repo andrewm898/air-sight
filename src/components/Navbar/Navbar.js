@@ -7,14 +7,16 @@ import "./Navbar.css";
 class Navbar extends React.Component {
   render() {
     return (
-      <ul className="menu">
-        <li className="menu-item">
-          <a>Home</a>
-        </li>
-        <li className="menu-item">
-          <a>Account</a>
-        </li>
-      </ul>
+      <div>
+        <ul className="menu">
+          <li className="menu-item">
+            <a>Home</a>
+          </li>
+          <li className="menu-item">
+            <a>Account</a>
+          </li>
+        </ul>
+      </div>
     );
   }
 }
