@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import Switch from "react-switch";
 import "./GoogleMap.css";
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
+import db from "../../firebaseConfig";
 
 const auth = require("../../auth.json");
+
 const style = {
   width: "100%",
   height: "95.25vh"
@@ -96,6 +98,7 @@ export class GoogleMap extends Component {
   constructor() {
     super();
     this.state = {
+      markers: [],
       checked: true,
       x: 0,
       y: 0,
@@ -134,6 +137,36 @@ export class GoogleMap extends Component {
     }
   };
 
+  componentDidMount = () => {
+    db.collection("fireLocations").onSnapshot(snapshot => {
+      let changes = snapshot.docChanges();
+      changes.forEach(change => {
+        console.log(change.doc.data());
+        if (change.type == "added") {
+          // renderCafe(change.doc);
+          this.setState(
+            (this.state.markers = this.state.markers.concat(
+              <Marker
+                name={change.doc.data().droneID}
+                position={{
+                  lat: change.doc.data().coords.latitude,
+                  lng: change.doc.data().coords.longitude
+                }}
+                onClick={this.onMarkerClick}
+                icon={{
+                  url:
+                    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
+                  anchor: new window.google.maps.Point(32, 32),
+                  scaledSize: new window.google.maps.Size(64, 64)
+                }}
+              />
+            ))
+          );
+        }
+      });
+    });
+  };
+
   render() {
     return (
       <div>
@@ -144,6 +177,7 @@ export class GoogleMap extends Component {
             style={style}
             onClick={this.onMapClicked}
             initialCenter={{
+              // make this dependent on users location given @ login?
               lat: 40.424,
               lng: -86.929
             }}
@@ -159,17 +193,7 @@ export class GoogleMap extends Component {
                 uncheckedIcon={false}
               />
             </div>
-            <Marker
-              name={"Corec"}
-              position={{ lat: 40.424, lng: -86.929 }}
-              onClick={this.onMarkerClick}
-              icon={{
-                url:
-                  "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
-                anchor: new window.google.maps.Point(32, 32),
-                scaledSize: new window.google.maps.Size(64, 64)
-              }}
-            />
+            {this.state.markers}
             <InfoWindow
               marker={this.state.activeMarker}
               visible={this.state.showingInfoWindow}
