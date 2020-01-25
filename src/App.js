@@ -18,7 +18,7 @@ function App() {
           <Route path="/" exact component={GoogleMap}></Route>
           <Route
             path="/DroneInfo"
-            render={() => <DroneInfo droneId={1} />}
+            render={() => <DroneInfo droneId={3} />}
           ></Route>
         </Switch>
       </div>

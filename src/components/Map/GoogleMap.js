@@ -4,6 +4,7 @@ import Switch from "react-switch";
 import "./GoogleMap.css";
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import db from "../../firebaseConfig";
+import sosIcon from "../../assets/sosIcon.png";
 
 const auth = require("../../auth.json");
 
@@ -12,6 +13,7 @@ export class GoogleMap extends Component {
     super();
     this.state = {
       markers: [],
+      sos: [],
       checked: true,
       x: 0,
       y: 0,
@@ -25,6 +27,16 @@ export class GoogleMap extends Component {
   handleChange(checked) {
     this.setState({ checked });
   }
+
+  onSOSClick = (props, person, e) => {
+    this.setState({
+      x: e.latLng.lat(),
+      y: e.latLng.lng(),
+      selectedPlace: props,
+      activeMarker: person,
+      showingInfoWindow: true
+    });
+  };
 
   onMarkerClick = (props, marker, e) => {
     this.setState({
@@ -66,25 +78,7 @@ export class GoogleMap extends Component {
                 onClick={this.onMarkerClick}
                 icon={{
                   url:
-                    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
-                  anchor: new window.google.maps.Point(32, 32),
-                  scaledSize: new window.google.maps.Size(64, 64)
-                }}
-              />
-            ))
-          );
-          this.setState(
-            (this.state.markers = this.state.markers.concat(
-              <Marker
-                name={change.doc.data().droneID}
-                position={{
-                  lat: change.doc.data().coords.latitude,
-                  lng: change.doc.data().coords.longitude
-                }}
-                onClick={this.onMarkerClick}
-                icon={{
-                  url:
-                    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
+                  "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
                   anchor: new window.google.maps.Point(32, 32),
                   scaledSize: new window.google.maps.Size(64, 64)
                 }}
@@ -94,6 +88,38 @@ export class GoogleMap extends Component {
         }
       });
     });
+
+    db.collection("sosLocations").onSnapshot(snapshot => {
+      let changes = snapshot.docChanges();
+      let iconObj = 
+      {"save": sosIcon}
+      changes.forEach(change => {
+        console.log(change.doc.data());
+        if (change.type == "added") {
+          console.log(change.doc.data());
+          this.setState(
+            (this.state.sos = this.state.sos.concat(
+              <Marker
+                name={change.doc.data().droneID}
+                position={{
+                  // lat: change.doc.data().coords.latitude,
+                  // lng: change.doc.data().coords.longitude
+                  lat: 40,
+                  lng: -83
+                }}
+                onClick={this.onSOSClick}
+                icon={{
+                  url: require("../../assets/sosIcon.png"),
+                  anchor: new window.google.maps.Point(32, 32),
+                  scaledSize: new window.google.maps.Size(64, 64)
+                }}
+              />
+            ))
+          );
+        }
+      });
+    });
+
   };
 
   switchContainer = () => {
@@ -115,6 +141,7 @@ export class GoogleMap extends Component {
     return (
       <InfoWindow
         marker={this.state.activeMarker}
+        person={this.state.activeMarker}
         visible={this.state.showingInfoWindow}
       >
         <div>
@@ -142,6 +169,7 @@ export class GoogleMap extends Component {
             disableDefaultUI={true}
             mapType={"roadmap"}
           >
+            {this.state.sos}
             {this.state.markers}
             {this.switchContainer()}
             {this.liveWindow()}
@@ -160,6 +188,7 @@ export class GoogleMap extends Component {
             disableDefaultUI={true}
             mapType={"satellite"}
           >
+            {this.state.sos}
             {this.state.markers}
             {this.switchContainer()}
             {this.liveWindow()}
