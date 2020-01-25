@@ -4,14 +4,19 @@ import Switch from "react-switch";
 import "./GoogleMap.css";
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import db from "../../firebaseConfig";
-import sosIcon from "../../assets/sosIcon.png";
 
 const auth = require("../../auth.json");
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> c9f425e92ce110b1012a29338444638703e2a55d
 export class GoogleMap extends Component {
   constructor() {
     super();
     this.state = {
       markers: [],
+      drones: [],
       sos: [],
       checked: true,
       x: 0,
@@ -47,7 +52,13 @@ export class GoogleMap extends Component {
     });
   };
 
+<<<<<<< HEAD
   onMapClicked = (props, e, coords) => {
+=======
+  
+
+  onMapClicked = (props, e) => {
+>>>>>>> c9f425e92ce110b1012a29338444638703e2a55d
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
@@ -56,8 +67,12 @@ export class GoogleMap extends Component {
 
       });
     } else {
+<<<<<<< HEAD
       const{latLng} = coords;
       console.log(coords);
+=======
+      //console.log(e.data().latLng.lat());
+>>>>>>> c9f425e92ce110b1012a29338444638703e2a55d
     }
   };
 
@@ -88,12 +103,36 @@ export class GoogleMap extends Component {
           );
         }
       });
-    });
-
+    });    
+    db.collection("droneLocations").onSnapshot(snapshot => {
+      let changes = snapshot.docChanges();
+      changes.forEach(change => {
+        console.log(change.doc.data());
+        if (change.type == "added") {
+          console.log(change.doc.data());
+          this.setState(
+            (this.state.drones = this.state.drones.concat(
+              <Marker
+                name={change.doc.data().droneID}
+                position={{
+                  lat: change.doc.data().coords.latitude,
+                  lng: change.doc.data().coords.longitude
+                }}
+                onClick={this.onMarkerClick}
+                icon={{
+                  url: require("../../assets/droneIcon.png"),
+                  anchor: new window.google.maps.Point(32, 32),
+                  scaledSize: new window.google.maps.Size(64, 64)
+                }}
+              />
+            ))
+          );
+        }
+      });
+    }); 
+    
     db.collection("sosLocations").onSnapshot(snapshot => {
       let changes = snapshot.docChanges();
-      let iconObj = 
-      {"save": sosIcon}
       changes.forEach(change => {
         console.log(change.doc.data());
         if (change.type == "added") {
@@ -101,27 +140,29 @@ export class GoogleMap extends Component {
           this.setState(
             (this.state.sos = this.state.sos.concat(
               <Marker
-                name={change.doc.data().droneID}
+                name={change.doc.data().droneId}
                 position={{
-                  // lat: change.doc.data().coords.latitude,
-                  // lng: change.doc.data().coords.longitude
-                  lat: 40, //temp coordinates for testing
-                  lng: -83
+                  lat: change.doc.data().coords.latitude,
+                  lng: change.doc.data().coords.longitude
                 }}
-                onClick={this.onSOSClick}
+                onClick={this.onMarkerClick}
                 icon={{
                   url: require("../../assets/sosIcon.png"),
                   anchor: new window.google.maps.Point(32, 32),
+<<<<<<< HEAD
                   scaledSize: new window.google.maps.Size(45, 60)
+=======
+                  scaledSize: new window.google.maps.Size(64, 64)
+>>>>>>> c9f425e92ce110b1012a29338444638703e2a55d
                 }}
               />
             ))
           );
         }
       });
-    });
+    }); 
 
-  };
+  }   
 
   switchContainer = () => {
     return (
@@ -172,6 +213,7 @@ export class GoogleMap extends Component {
           >
             {this.state.sos}
             {this.state.markers}
+            {this.state.drones}
             {this.switchContainer()}
             {this.liveWindow()}
           </Map>
@@ -191,6 +233,7 @@ export class GoogleMap extends Component {
           >
             {this.state.sos}
             {this.state.markers}
+            {this.state.drones}
             {this.switchContainer()}
             {this.liveWindow()}
           </Map>
