@@ -1,4 +1,5 @@
 import React, { Component, createRef } from "react";
+import "./GoogleMap.css";
 
 let auth = require("../../auth.json");
 
@@ -24,15 +25,16 @@ class GoogleMap extends Component {
     new window.google.maps.Map(this.googleMapRef.current, {
       zoom: 17,
       center: {
-        lat: 40.429865000,
-        lng: -86.92081500
+        lat: 40.429865,
+        lng: -86.920815
       },
-      disableDefaultUI: true
+      disableDefaultUI: true,
+      mapTypeId: "satellite"
     });
 
   createMarker = () =>
     new window.google.maps.Marker({
-      position: { lat: 40.429865000, lng: -86.92081500 },
+      position: { lat: 40.429865, lng: -86.920815 },
       map: this.googleMap
     });
 
@@ -41,7 +43,7 @@ class GoogleMap extends Component {
       <div
         id="google-map"
         ref={this.googleMapRef}
-        style={{ width: "600px", height: "600px" }}
+        style={{ width: "100%", height: "95vh" }}
       />
     );
   }
