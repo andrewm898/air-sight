@@ -1,5 +1,7 @@
 import React, { Component, createRef } from "react";
 
+let auth = require("../../auth.json");
+
 class GoogleMap extends Component {
   constructor(props) {
     super(props);
@@ -9,7 +11,7 @@ class GoogleMap extends Component {
 
   componentDidMount() {
     const googleMapScript = document.createElement("script");
-    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key={API-KEY}&libraries=places`;
+    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${auth.API_KEY}&libraries=places`;
     window.document.body.appendChild(googleMapScript);
 
     googleMapScript.addEventListener("load", () => {
