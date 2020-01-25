@@ -14,6 +14,7 @@ export class GoogleMap extends Component {
     this.state = {
       markers: [],
       drones: [],
+      sos: [],
       checked: true,
       x: 0,
       y: 0,
@@ -27,6 +28,16 @@ export class GoogleMap extends Component {
   handleChange(checked) {
     this.setState({ checked });
   }
+
+  onSOSClick = (props, person, e) => {
+    this.setState({
+      x: e.latLng.lat(),
+      y: e.latLng.lng(),
+      selectedPlace: props,
+      activeMarker: person,
+      showingInfoWindow: true
+    });
+  };
 
   onMarkerClick = (props, marker, e) => {
     this.setState({
@@ -70,7 +81,7 @@ export class GoogleMap extends Component {
                 onClick={this.onMarkerClick}
                 icon={{
                   url:
-                    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
+                  "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/fire_1f525.png",
                   anchor: new window.google.maps.Point(32, 32),
                   scaledSize: new window.google.maps.Size(64, 64)
                 }}
@@ -79,8 +90,7 @@ export class GoogleMap extends Component {
           );
         }
       });
-    });
-
+    });    
     db.collection("droneLocations").onSnapshot(snapshot => {
       let changes = snapshot.docChanges();
       changes.forEach(change => {
@@ -96,8 +106,8 @@ export class GoogleMap extends Component {
                   lng: change.doc.data().coords.longitude
                 }}
                 onClick={this.onMarkerClick}
-                icon={{ 
-                  url : require('../../assets/droneIcon.png'),
+                icon={{
+                  url: require("../../assets/droneIcon.png"),
                   anchor: new window.google.maps.Point(32, 32),
                   scaledSize: new window.google.maps.Size(64, 64)
                 }}
@@ -106,9 +116,36 @@ export class GoogleMap extends Component {
           );
         }
       });
-    });
+    }); 
+    
+    db.collection("sosLocations").onSnapshot(snapshot => {
+      let changes = snapshot.docChanges();
+      changes.forEach(change => {
+        console.log(change.doc.data());
+        if (change.type == "added") {
+          console.log(change.doc.data());
+          this.setState(
+            (this.state.sos = this.state.sos.concat(
+              <Marker
+                name={change.doc.data().droneId}
+                position={{
+                  lat: change.doc.data().coords.latitude,
+                  lng: change.doc.data().coords.longitude
+                }}
+                onClick={this.onMarkerClick}
+                icon={{
+                  url: require("../../assets/sosIcon.png"),
+                  anchor: new window.google.maps.Point(32, 32),
+                  scaledSize: new window.google.maps.Size(64, 64)
+                }}
+              />
+            ))
+          );
+        }
+      });
+    }); 
 
-  };
+  }   
 
   switchContainer = () => {
     return (
@@ -129,6 +166,7 @@ export class GoogleMap extends Component {
     return (
       <InfoWindow
         marker={this.state.activeMarker}
+        person={this.state.activeMarker}
         visible={this.state.showingInfoWindow}
       >
         <div>
@@ -156,6 +194,7 @@ export class GoogleMap extends Component {
             disableDefaultUI={true}
             mapType={"roadmap"}
           >
+            {this.state.sos}
             {this.state.markers}
             {this.state.drones}
             {this.switchContainer()}
@@ -175,6 +214,7 @@ export class GoogleMap extends Component {
             disableDefaultUI={true}
             mapType={"satellite"}
           >
+            {this.state.sos}
             {this.state.markers}
             {this.state.drones}
             {this.switchContainer()}
