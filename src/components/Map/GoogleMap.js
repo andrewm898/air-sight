@@ -27,16 +27,6 @@ export class GoogleMap extends Component {
     this.setState({ checked });
   }
 
-  onSOSClick = (props, person, e) => {
-    this.setState({
-      x: e.latLng.lat(),
-      y: e.latLng.lng(),
-      selectedPlace: props,
-      activeMarker: person,
-      showingInfoWindow: true
-    });
-  };
-
   onMarkerClick = (props, marker, e) => {
     this.setState({
       x: e.latLng.lat(),
@@ -59,6 +49,23 @@ export class GoogleMap extends Component {
       const{latLng} = coords;
       console.log(coords);
     }
+    this.setState(
+      (this.state.sos = this.state.sos.concat(
+        <Marker
+          position={{
+            lat: coords.latLng.lat(),
+            lng: coords.latLng.lng()
+          }}
+          onClick={this.onMarkerClick}
+          icon={{
+  
+            anchor: new window.google.maps.Point(32, 32),
+            scaledSize: new window.google.maps.Size(45, 60)
+          }}
+        />
+      ))
+    );
+    
   };
 
   componentDidMount = () => {
@@ -192,6 +199,7 @@ export class GoogleMap extends Component {
             disableDefaultUI={true}
             mapType={"roadmap"}
           >
+           
             {this.state.sos}
             {this.state.markers}
             {this.state.drones}

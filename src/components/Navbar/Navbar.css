@@ -17,11 +17,11 @@ ul {
 }
 
 .menu-item a {
-  font-family: "Nunito", sans-serif;
+  font-family: Gill Sans Extrabold, sans-serif;
   font-size: 20px;
   display: block;
   color: #000;
-  padding: 8px 16px;
+  padding: 10px 18px;
   text-decoration: none;
 }
 
