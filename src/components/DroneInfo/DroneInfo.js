@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 import "./DroneInfo.css";
-
+import droneIcon from "../../assets/droneIcon.png";
+import UserForm from "../../components/DroneInfo/UserForm";
 // todo: Unless you need to use lifecycle methods or local state,
 // write your component in functional form as above and delete
 // this section.
@@ -9,6 +10,7 @@ class DroneInfo extends React.Component {
   render() {
     return (
       <div>
+        <UserForm />
         <div className="info">
           <h1>Drone {this.props.droneId} Info.</h1>
           <br />
@@ -19,7 +21,9 @@ class DroneInfo extends React.Component {
           <h2>Other Sensor Data</h2>
         </div>
 
-        <div className="image">test</div>
+        <div>
+          <img src={droneIcon} alt="drone" height="700px" width="600"/>
+        </div>
       </div>
     );
   }
