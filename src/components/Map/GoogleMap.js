@@ -46,8 +46,9 @@ export class GoogleMap extends Component {
 
       });
     } else {
-      const{latLng} = coords;
-      console.log(coords);
+      const {latLng} = coords;
+      console.log(latLng.lat());
+      
     }
     this.setState(
       (this.state.sos = this.state.sos.concat(
@@ -105,7 +106,7 @@ export class GoogleMap extends Component {
           this.setState(
             (this.state.drones = this.state.drones.concat(
               <Marker
-                name={change.doc.data().droneID}
+                title ={change.doc.data().droneID}
                 position={{
                   lat: change.doc.data().coords.latitude,
                   lng: change.doc.data().coords.longitude
@@ -119,7 +120,33 @@ export class GoogleMap extends Component {
               />
             ))
           );
-        }
+        } else if(change.type == "modified") {
+
+          for(var i = 0; i < this.state.drones.length; i++) {
+            console.log(this.state.drones[i]);
+            //if(this.state.drones[i].getLabel() === change.doc.data().droneID) {
+              console.log("Reaches position")
+              this.setState(
+                (this.state.drones[i] =
+                  <Marker
+                    name={change.doc.data().droneID}
+                    position={{
+                      lat: change.doc.data().coords.latitude,
+                      lng: change.doc.data().coords.longitude
+                    }}
+                    onClick={this.onMarkerClick}
+                    icon={{
+                      url: require("../../assets/droneIcon.png"),
+                      anchor: new window.google.maps.Point(32, 32),
+                      scaledSize: new window.google.maps.Size(64, 64)
+                    }}
+                  />
+                ))
+              break;
+            //}
+          }
+          }
+        //}
       });
     }); 
     
@@ -195,6 +222,8 @@ export class GoogleMap extends Component {
               lat: 40.424,
               lng: -86.929
             }}
+            onClick={this.onMapClicked}
+            
             styles={streetStyle}
             disableDefaultUI={true}
             mapType={"roadmap"}
@@ -213,6 +242,7 @@ export class GoogleMap extends Component {
             zoom={14}
             style={style}
             onClick={this.onMapClicked}
+
             initialCenter={{
               lat: 40.424,
               lng: -86.929
