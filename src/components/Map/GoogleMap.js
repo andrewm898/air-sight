@@ -5,6 +5,10 @@ import "./GoogleMap.css";
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import db from "../../firebaseConfig";
 
+var firebase = require('firebase/app');
+require('firebase/auth');
+require('firebase/database');
+
 const auth = require("../../auth.json");
 
 
@@ -34,14 +38,18 @@ export class GoogleMap extends Component {
   }
 
   writeToPin(droneID, coords, pinCount) {
-    db.collection("dronePins" + droneID).doc("pin" + pinCount).set({
-      droneID : droneID,
-      coords : {
-        latitude : coords.latLng.lat(),
-        longitude : coords.latLng.lng()
-      },
-      pinCount : pinCount
+    
+    var pins = firebase.database().ref("dronePins" + droneID);
+    var name = "pins" + pinCount;
+
+    pins.update({
+      [name] : {
+        index : pinCount,
+        lat : coords.latLng.lat(),
+        long : coords.latLng.lng()
+      }
     })
+
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -94,7 +102,7 @@ export class GoogleMap extends Component {
     db.collection("fireLocations").onSnapshot(snapshot => {
       let changes = snapshot.docChanges();
       changes.forEach(change => {
-        console.log(change.doc.data());
+        
         if (change.type == "added") {
           console.log(change.doc.data());
           this.setState(
