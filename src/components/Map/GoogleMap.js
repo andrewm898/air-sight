@@ -6,14 +6,20 @@ import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import db from "../../firebaseConfig";
 
 const auth = require("../../auth.json");
+
+
+
 export class GoogleMap extends Component {
   constructor() {
     super();
     this.state = {
       markers: [],
       drones: [],
+      pins: [],
       sos: [],
       checked: true,
+      pinCount : 0,
+      document : 0,
       x: 0,
       y: 0,
       showingInfoWindow: false,
@@ -25,6 +31,17 @@ export class GoogleMap extends Component {
 
   handleChange(checked) {
     this.setState({ checked });
+  }
+
+  writeToPin(droneID, coords, pinCount) {
+    db.collection("dronePins" + droneID).doc("pin" + pinCount).set({
+      droneID : droneID,
+      coords : {
+        latitude : coords.latLng.lat(),
+        longitude : coords.latLng.lng()
+      },
+      pinCount : pinCount
+    })
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -48,8 +65,12 @@ export class GoogleMap extends Component {
     } else {
       const {latLng} = coords;
       console.log(latLng.lat());
+      console.log(latLng.lng());
+      console.log('Pincount is: ', this.state.pinCount)
       
     }
+    this.writeToPin(0, coords, this.state.pinCount);
+    this.state.pinCount++;
     this.setState(
       (this.state.sos = this.state.sos.concat(
         <Marker
@@ -96,7 +117,32 @@ export class GoogleMap extends Component {
           );
         }
       });
-    });    
+    });  
+    
+    db.collection("dronePins0").onSnapshot(snapshot => {
+      let changes = snapshot.docChanges();
+      changes.forEach(change => {
+        if (change.type == "added") {
+          console.log(change.doc.data());
+          this.setState(
+            (this.state.pins = this.state.pins.concat(
+              <Marker
+                name={change.doc.data().droneID}
+                position={{
+                  lat: change.doc.data().coords.latitude,
+                  lng: change.doc.data().coords.longitude
+                }}
+                onClick={this.onMarkerClick}
+                icon={{
+                  anchor: new window.google.maps.Point(32, 32),
+                  scaledSize: new window.google.maps.Size(48, 48)
+                }}
+              />
+            ))
+          );
+        }
+      });
+    });  
     db.collection("droneLocations").onSnapshot(snapshot => {
       let changes = snapshot.docChanges();
       changes.forEach(change => {
@@ -154,7 +200,7 @@ export class GoogleMap extends Component {
       let changes = snapshot.docChanges();
       changes.forEach(change => {
         console.log(change.doc.data());
-        if (change.type == "added") {
+        if (change.type === "added") {
           console.log(change.doc.data());
           this.setState(
             (this.state.sos = this.state.sos.concat(
@@ -232,6 +278,7 @@ export class GoogleMap extends Component {
             {this.state.sos}
             {this.state.markers}
             {this.state.drones}
+            {this.state.pins}
             {this.switchContainer()}
             {this.liveWindow()}
           </Map>
@@ -253,6 +300,7 @@ export class GoogleMap extends Component {
             {this.state.sos}
             {this.state.markers}
             {this.state.drones}
+            {this.state.pins}
             {this.switchContainer()}
             {this.liveWindow()}
           </Map>
