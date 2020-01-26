@@ -11,37 +11,57 @@ class App extends React.Component{
   constructor() {
     super();
     this.state = {
+      userEmail: "",
+      userPass: "",
       isAuth : false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(event) {
+    var usersRef = db.collection("users");
+    if (this.state.userEmail != undefined && this.state.userEmail != "") {
+      var matches = usersRef.doc(this.state.userEmail);
+    if (matches != undefined) {
+      matches.get().then((doc) => {
+        if (doc.data() != undefined && doc.data().Password === this.state.userPass) {
+          console.log("Authorized!")
+          this.setState({isAuth: true});
+        }
+      })
+    }
+    }
+  }
 
+  handleEmailChange = (event) => {
+    this.setState({userEmail: event.target.value})
+  }
+
+  handlePassChange = (event) => {
+    this.setState({userPass: event.target.value})
   }
 
 
   render (){
     if (this.state.isAuth) {
     return (
-      <div className="App">
-        <Router>
+    
+          <div className="App">
          <link
           href="https://fonts.googleapis.com/css?family=Nunito&display=swap"
           rel="stylesheet"
         />
-        <div className="App">
+        <Navbar></Navbar>
           <Switch>
-            <Navbar></Navbar>
+            
             <Route
               path="/droneinfo"
               render={() => <DroneInfo droneId={3} />}
             ></Route>
             <Route path="/" exact component={GoogleMap}></Route>
           </Switch>
-        </div>
-      </Router>
-      </div>);
+          </div>
+      );
       
     } else {
       return(
@@ -50,10 +70,10 @@ class App extends React.Component{
             <img className="logo" src={droneIcon} alt="Drone"/>
             <div className="form">
                 <div className="form-group">
-                    <input type="text" name="email" placeholder="Email"/>  
+                    <input type="text" name="email" placeholder="Email" onChange={this.handleEmailChange}/>  
                 </div>
                 <div className="form-group">
-                    <input type="password" name="password" placeholder="Password"/>  
+                    <input type="password" name="password" placeholder="Password" onChange={this.handlePassChange}/>  
                 </div>
             </div>
             <div className="footer">
