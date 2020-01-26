@@ -15,6 +15,9 @@ class Navbar extends React.Component {
               Home
             </Link>
           </li>
+          <h1 className="divider">
+          I
+          </h1>
           <li className="menu-item">
             <Link to="/DroneInfo" className="DroneBtn">
               Drones

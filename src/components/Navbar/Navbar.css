@@ -3,13 +3,19 @@
   color: white;
 }
 
+.divider {
+  padding-top: 0%;
+  color: black;
+  margin-top: 0%;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   height: 4.75vh;
   width: 200px;
-  color: #f65058ff;
+  color: rgb(0, 0, 0);
 }
 
 .menu-item {
