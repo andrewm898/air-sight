@@ -27,11 +27,11 @@ class UserForm extends Component {
     const { posts, errorMsg } = this.state;
     return (
       <div>
-        List of posts
+        {/* List of posts
         {posts.length
           ? posts.map(post => <div key={post.id}>{post.title}</div>)
           : null}
-        <img className="image-card" alt="Cool" src={this.state.img} />
+        <img className="image-card" alt="Cool" src={this.state.img} /> */}
         {errorMsg ? <div>{errorMsg}</div> : null}
       </div>
     );

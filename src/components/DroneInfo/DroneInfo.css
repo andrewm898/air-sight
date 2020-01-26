@@ -10,15 +10,29 @@ h2 {
   color: black;
 }
 
-.info {
+.example {
   position: absolute;
-  background-color: white;
-  padding-left: 15px;
-  padding-right: 125px;
+  
   padding-bottom: 50px;
   border-radius: 7.5px;
   top: 15%;
-  left: 20%;
+  right: 20%;
+  width: 40%;
+}
+
+.info {
+  position: absolute;
+  
+  background-color: white;
+  padding-left: 20px;
+  padding-right: 100px;
+  padding-bottom: 50px;
+  border-radius: 7.5px;
+  top: 15%;
+  left: 17%;
+  width: 13%;
+  text-align: left;
+  text-size-adjust: 10px;
 }
 
 .image {

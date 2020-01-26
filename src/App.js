@@ -53,12 +53,11 @@ class App extends React.Component{
         />
         <Navbar></Navbar>
           <Switch>
-            
+            <Route path="/" exact component={GoogleMap}></Route>
             <Route
               path="/droneinfo"
               render={() => <DroneInfo droneId={3} />}
             ></Route>
-            <Route path="/" exact component={GoogleMap}></Route>
           </Switch>
           </div>
       );
@@ -77,9 +76,7 @@ class App extends React.Component{
                 </div>
             </div>
             <div className="footer">
-                <button type="button" className="btn" onClick={this.handleSubmit}>
-                    Login
-                </button>
+                <button type="button" className="btn" onClick={this.handleSubmit}>Login</button>
             </div>
             </form>
     </div>);
