@@ -7,6 +7,8 @@ See https://www.hackster.io/contests/hovergames/rules#challengeNav for contest d
 See https://www.hackster.io/contests/hovergames/hardware_applications/11029 for entry description.
 In the project directory, you can run:
 
+If you run this app in your browser, you will first see a login screen. You can use the credentials sampleuser@sample.com as a username and password as the password to see the actual app.
+
 ### `npm start`
 
 Runs the app in the development mode.<br />
