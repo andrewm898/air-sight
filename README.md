@@ -2,6 +2,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Air Sight
 
+This is an ongoing project that was heavily developed during a hackathon, and will be submitted to the Hackster.io 'Hovergames' competition by 1/31/20.
+See https://www.hackster.io/contests/hovergames/rules#challengeNav for contest description.
+See https://www.hackster.io/contests/hovergames/hardware_applications/11029 for entry description.
 In the project directory, you can run:
 
 ### `npm start`
